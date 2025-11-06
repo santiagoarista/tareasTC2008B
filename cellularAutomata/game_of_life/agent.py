@@ -45,6 +45,7 @@ class Cell(FixedAgent):
         self._next_state = self.state
         print(self.pos[1])
 
+        # Update only if the row matches the y position of the cell
         if self.pos[1] == row:
             if neighbor_info[2] == 1 and neighbor_info[4] == 1 and neighbor_info[7] == 1:
                 self._next_state = self.DEAD
