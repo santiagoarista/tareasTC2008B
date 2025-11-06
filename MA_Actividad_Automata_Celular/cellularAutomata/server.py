@@ -29,7 +29,7 @@ model_params = {
         "value": 50,
         "label": "Width",
         "min": 5,
-        "max": 60,
+        "max": 200,
         "step": 1,
     },
     "height": {
@@ -37,7 +37,7 @@ model_params = {
         "value": 50,
         "label": "Height",
         "min": 5,
-        "max": 60,
+        "max": 200,
         "step": 1,
     },
     "initial_fraction_alive": {

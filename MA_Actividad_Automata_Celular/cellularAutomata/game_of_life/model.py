@@ -10,7 +10,8 @@ class ConwaysGameOfLife(Model):
         """Create a new playing area of (width, height) cells."""
         super().__init__(seed=seed)
         #Added counter with number of rows to assume state only if row matches with expected y position. Started in 49 to begin the row in 48
-        self.count = 49
+        self.count = height - 1
+        self.height = height
 
         """Grid where cells are connected to their 8 neighbors.
 
@@ -26,7 +27,7 @@ class ConwaysGameOfLife(Model):
         # Place a cell at each location, with some initialized to
         # ALIVE and some to DEAD.
         for i, cell in enumerate(self.grid.all_cells):
-            if (i + 1) % 50 == 0:
+            if (i + 1) % self.height == 0:
                 Cell(
                     self,
                     cell,
