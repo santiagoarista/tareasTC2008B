@@ -43,26 +43,22 @@ class Cell(FixedAgent):
         neighbor_info = [(n.state) for n in self.neighbors]
         # Assume nextState is unchanged, unless changed below.
         self._next_state = self.state
-        print(self.pos[1])
 
-        # Update only if the row matches the y position of the cell
+        neighborStates ={
+            '111' : 0,
+            '110' : 1,
+            '101' : 0,
+            '100' : 1,
+            '011' : 1,
+            '010' : 0,
+            '001' : 1,
+            '000' : 0
+        }
+
+        # Update only if the row matches the y position of the cell based on the key based on the top neighbors
         if self.pos[1] == row:
-            if neighbor_info[2] == 1 and neighbor_info[4] == 1 and neighbor_info[7] == 1:
-                self._next_state = self.DEAD
-            elif neighbor_info[2] == 1 and neighbor_info[4] == 1 and neighbor_info[7] == 0:
-                self._next_state = self.ALIVE
-            elif neighbor_info[2] == 1 and neighbor_info[4] == 0 and neighbor_info[7] == 1:
-                self._next_state = self.DEAD
-            elif neighbor_info[2] == 1 and neighbor_info[4] == 0 and neighbor_info[7] == 0:
-                self._next_state = self.ALIVE
-            elif neighbor_info[2] == 0 and neighbor_info[4] == 1 and neighbor_info[7] == 1:
-                self._next_state = self.ALIVE
-            elif neighbor_info[2] == 0 and neighbor_info[4] == 1 and neighbor_info[7] == 0:
-                self._next_state = self.DEAD
-            elif neighbor_info[2] == 0 and neighbor_info[4] == 0 and neighbor_info[7] == 1:
-                self._next_state = self.ALIVE
-            elif neighbor_info[2] == 0 and neighbor_info[4] == 0 and neighbor_info[7] == 0:
-                self._next_state = self.DEAD
+            key = f"{neighbor_info[2]}{neighbor_info[4]}{neighbor_info[7]}"
+            self._next_state = neighborStates[key]
  
 
     def assume_state(self):

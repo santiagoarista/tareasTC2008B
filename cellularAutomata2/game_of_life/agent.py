@@ -41,26 +41,20 @@ class Cell(FixedAgent):
         # Get the neighbors and apply the rules on whether to be alive or dead
         # at the next tick.
         neighbor_info = [(n.state) for n in self.neighbors]
-        print(f"Neighbors (x, y, state): {neighbor_info}")
-        # Assume nextState is unchanged, unless changed below.
-        self._next_state = self.state
+        neighborStates ={
+            '111' : 0,
+            '110' : 1,
+            '101' : 0,
+            '100' : 1,
+            '011' : 1,
+            '010' : 0,
+            '001' : 1,
+            '000' : 0
+        }
 
-        if neighbor_info[2] == 1 and neighbor_info[4] == 1 and neighbor_info[7] == 1:
-            self._next_state = self.DEAD
-        elif neighbor_info[2] == 1 and neighbor_info[4] == 1 and neighbor_info[7] == 0:
-            self._next_state = self.ALIVE
-        elif neighbor_info[2] == 1 and neighbor_info[4] == 0 and neighbor_info[7] == 1:
-            self._next_state = self.DEAD
-        elif neighbor_info[2] == 1 and neighbor_info[4] == 0 and neighbor_info[7] == 0:
-            self._next_state = self.ALIVE
-        elif neighbor_info[2] == 0 and neighbor_info[4] == 1 and neighbor_info[7] == 1:
-            self._next_state = self.ALIVE
-        elif neighbor_info[2] == 0 and neighbor_info[4] == 1 and neighbor_info[7] == 0:
-            self._next_state = self.DEAD
-        elif neighbor_info[2] == 0 and neighbor_info[4] == 0 and neighbor_info[7] == 1:
-            self._next_state = self.ALIVE
-        elif neighbor_info[2] == 0 and neighbor_info[4] == 0 and neighbor_info[7] == 0:
-            self._next_state = self.DEAD
+        # Update state depending on the key based on the top neighbors 
+        key = f"{neighbor_info[2]}{neighbor_info[4]}{neighbor_info[7]}"
+        self._next_state = neighborStates[key]
 
     def assume_state(self):
         """Set the state to the new computed state -- computed in step()."""

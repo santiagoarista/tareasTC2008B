@@ -9,7 +9,7 @@ class ConwaysGameOfLife(Model):
     def __init__(self, width=50, height=50, initial_fraction_alive=0.2, seed=None):
         """Create a new playing area of (width, height) cells."""
         super().__init__(seed=seed)
-        #Added counter with number of rows to assume state only if row matches with expected y position
+        #Added counter with number of rows to assume state only if row matches with expected y position. Started in 49 to begin the row in 48
         self.count = 49
 
         """Grid where cells are connected to their 8 neighbors.
@@ -55,10 +55,7 @@ class ConwaysGameOfLife(Model):
         - Then, all cells change state to their next state.
         """
 
-        #Go row by row and whenever it gets to 0 restart from 49 for it to restart automatically
-        if self.count > 0:
-            self.count -= 1
-        else:
-            self.count = 49
+        #Go row by row 
+        self.count -= 1
         self.agents.do("determine_state", self.count)
         self.agents.do("assume_state")
