@@ -93,9 +93,18 @@ class CleanerAgent(CellAgent):
         # No path found
         return []
 
+    def is_station_occupied(self, station):
+        """
+        Check if a charging station is occupied by another cleaner agent.
+        """
+        for agent in station.cell.agents:
+            if isinstance(agent, CleanerAgent) and agent != self:
+                return True
+        return False
+
     def find_charging_station(self):
         """
-        Finds the path to the nearest charging station.
+        Finds the path to the nearest available (unoccupied) charging station.
         In multi-agent mode, agents only know their initial station initially,
         but can charge at any station they discover.
         """
@@ -106,18 +115,21 @@ class CleanerAgent(CellAgent):
         if not charging_stations:
             return None
         
-        # In multi-agent mode, prefer initial station if known
-        # but can use any station (simulating discovery)
+        # In multi-agent mode, prefer initial station if known and available
         if self.model.multi_agent_mode and self.initial_station:
-            # Check if initial station is accessible, otherwise find nearest
-            if self.initial_station in charging_stations:
+            # Check if initial station is accessible and not occupied
+            if self.initial_station in charging_stations and not self.is_station_occupied(self.initial_station):
                 return self.initial_station
         
-        # Get the nearest charging station (any station)
+        # Get the nearest available (unoccupied) charging station
         min_distance = float('inf')
         nearest_station = None
         
         for station in charging_stations:
+            # Skip occupied stations
+            if self.is_station_occupied(station):
+                continue
+                
             dx = abs(self.cell.coordinate[0] - station.cell.coordinate[0])
             dy = abs(self.cell.coordinate[1] - station.cell.coordinate[1])
             distance = dx + dy
@@ -231,6 +243,22 @@ class CleanerAgent(CellAgent):
                                  for agent in self.cell.agents)
         
         if at_charging_station:
+            # Check if another cleaner agent is also at this station
+            other_agent_here = any(isinstance(agent, CleanerAgent) and agent != self
+                                  for agent in self.cell.agents)
+            
+            if other_agent_here:
+                # Station is occupied, need to move away and find another station
+                self.returning_to_charge = True
+                station = self.find_charging_station()
+                if station:
+                    self.move_towards_station(station.cell)
+                else:
+                    # No available stations, wait nearby
+                    pass
+                return
+            
+            # Station is available, charge here
             if self.battery < 100:
                 # Charge battery - stay here until fully charged
                 self.battery = min(100, self.battery + 5)
@@ -247,6 +275,9 @@ class CleanerAgent(CellAgent):
             station = self.find_charging_station()
             if station:
                 self.move_towards_station(station.cell)
+            else:
+                # No available stations, wait/move randomly
+                pass
             return
         
         if self.battery <= 0:

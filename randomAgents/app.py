@@ -89,7 +89,7 @@ model_params = {
         "value": False,
         "label": "Multi-Agent Mode (True = Random positions, False = Single station at [1,1])",
     },
-    "num_agents": Slider("Number of cleaning agents", 5, 1, 20),
+    "num_agents": Slider("Number of cleaning agents", 1, 1, 20),
     "width": Slider("Grid width", 20, 10, 50),
     "height": Slider("Grid height", 20, 10, 50),
     "dirty_percentage": Slider("Dirty cells percentage", 30, 0, 80),

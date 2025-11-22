@@ -5,4 +5,5 @@ node_modules/
 .env
 agents_requirements.txt
 .agents
+.venv
 venv

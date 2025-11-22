@@ -15,7 +15,7 @@ class CleaningModel(Model):
         max_time: Maximum time steps for the simulation
         multi_agent_mode: If True, agents start at random positions with their own stations
     """
-    def __init__(self, num_agents=10, width=20, height=20, dirty_percentage=30, 
+    def __init__(self, num_agents=1, width=20, height=20, dirty_percentage=30, 
                  obstacle_percentage=10, max_time=1000, multi_agent_mode=True, seed=42):
 
         super().__init__(seed=seed)
